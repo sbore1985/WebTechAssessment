@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #8c8c8c;
+        }
+
+        body {
+            isolation: isolate;
+            padding: 40px;
+        }
+
+        body::before {
+            position: fixed;
+            content: "";
+            inset: 0;
+            background: url('images/f1_vehicles.jpg') center / cover no-repeat;
+            opacity: 50%;
+            z-index: -1;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 6px;
+        }
+
+        .header a.logo {
+            display: block;
+            line-height: 0;
+        }
+
+        .header img {
+            display: block;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .header a.logo:hover img {
+            filter: brightness(1.5)
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #8c8c8c;
+            display: flex;
+            justify-content: center;
+        }
+
+        li {
+            float: center;
+        }
+
+        li a,
+        .dropbtn {
+            display: inline-block;
+            color: black;
+            font-style: bold;
+            font-size: large;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover,
+        .dropdown:hover .dropbtn {
+            background-color: #8c8c8c;
+        }
+
+        li.dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #8c8c8c;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            max-height: 30vh;
+            overflow-y: auto;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 350px));
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .card {
+            background: #e7e7e7;
+            opacity: 90%;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .helmet img {
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 330px;
+            height: auto;
+            mix-blend-mode: multiply;
+        }
+
+        @media (max-width: 700px) {
+            .cards {
+                grid-template-columns: minmax(0, 350px);
+            }
+        }
+
+        .standings-wrap {
+            max-width: 900px;
+            margin: 20px auto;
+            overflow-x: auto;
+        }
+
+        .standings {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        .standings th,
+        .standings td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .standings th {
+            text-align: center;
+        }
+
+        #season-standings {
+            text-align: center;
+            text-decoration-line: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <a href="f1_homepage.html" class="logo">
+            <img src="images/f1_logo.png" alt="F1 Wiki Logo" />
+        </a>
+
+        <ul>
+            <li><a href="f1_drivers.html">Drivers</a></li>
+            <li><a href="f1_teams.html">Teams</a></li>
+            <li><a href="f1_standings.html">Standings</a></li>
+            <li><a href="f1_circuits.html">Circuits</a></li>
+        </ul>
+    </div>
+    <main class="container">
+       <h2 id="season-standings">Circuits</h2>
+       <p style="text-align: center">
+       <label for="country">Country: </label>
+       <select id="country"> 
+       <option value="">Choose a Country</option>>
+       </select>
+      </p>       
+
+      <div class="standings-wrap">
+       <table class="standings">
+            <thead>
+                <tr>
+                    <th>Circuit</th>
+                    <th>City</th>
+                    <th>Length</th>
+                    <th>Corners</th>
+                    <th>Lap Record</th>
+                    <th>Lap Record Held By</th>
+                </tr>
+            </thead>
+            <tbody id="circuits_body"></tbody>
+        </table>
+       </div>
+    </main>
+<script>
+   const countrySelect = document.getElementById("country");
+   const tbody = document.getElementById("circuits_body");
+   let allCircuits =[]
+
+   async function loadCircuits() {
+    const res = await fetch("https://f1api.dev/api/circuits?limit=30");
+    const data = await res.json();
+    console.log(data);
+    allCircuits = data.circuits || [];
+
+    const countries = [...new Set(allCircuits.map(c => c.country))].sort();
+
+    countries.forEach(name => {
+        countrySelect.innerHTML +=`<option>${name}</option>`;
+    });
+   }
+ 
+
+  countrySelect.addEventListener("change", showCircuits);
+
+   function showCircuits() {
+    const country = countrySelect.value;
+    tbody.innerHTML = "";
+
+    const matches = allCircuits.filter(c => c.country === country);
+
+    matches.forEach(c => {
+      tbody.innerHTML += `
+      <tr> 
+        <td>${c.circuitName}</td>
+        <td>${c.city ?? "N/A"}</td>
+        <td>${c.circuitLength}</td>
+        <td>${c.numberOfCorners}</td>
+        <td>${c.lapRecord}</td>
+        <td>${c.fastestLapDriverId}</td>
+        </tr>`;
+      
+    });
+   }
+
+   loadCircuits();
+</script>
+</body>
+</html>
