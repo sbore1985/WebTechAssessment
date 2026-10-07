@@ -27,7 +27,7 @@
             position: fixed;
             content: "";
             inset: 0;
-            background: url('images/f1_vehicles.jpg') center / cover no-repeat;
+            background: url('f1_vehicles.jpg') center / cover no-repeat;
             opacity: 50%;
             z-index: -1;
         }
@@ -182,7 +182,7 @@
 
     <div class="header">
         <a href="f1_homepage.html" class="logo">
-            <img src="images/f1_logo.png" alt="F1 Wiki Logo" />
+            <img src="f1_logo.png" alt="F1 Wiki Logo" />
         </a>
 
         <ul>
@@ -193,59 +193,59 @@
         </ul>
     </div>
     <main class="container">
-       <h2 id="season-standings">Circuits</h2>
-       <p style="text-align: center">
-       <label for="country">Country: </label>
-       <select id="country"> 
-       <option value="">Choose a Country</option>>
-       </select>
-      </p>       
+        <h2 id="season-standings">Circuits</h2>
+        <p style="text-align: center">
+            <label for="country">Country: </label>
+            <select id="country">
+                <option value="">Choose a Country</option>>
+            </select>
+        </p>
 
-      <div class="standings-wrap">
-       <table class="standings">
-            <thead>
-                <tr>
-                    <th>Circuit</th>
-                    <th>City</th>
-                    <th>Length</th>
-                    <th>Corners</th>
-                    <th>Lap Record</th>
-                    <th>Lap Record Held By</th>
-                </tr>
-            </thead>
-            <tbody id="circuits_body"></tbody>
-        </table>
-       </div>
+        <div class="standings-wrap">
+            <table class="standings">
+                <thead>
+                    <tr>
+                        <th>Circuit</th>
+                        <th>City</th>
+                        <th>Length</th>
+                        <th>Corners</th>
+                        <th>Lap Record</th>
+                        <th>Lap Record Held By</th>
+                    </tr>
+                </thead>
+                <tbody id="circuits_body"></tbody>
+            </table>
+        </div>
     </main>
-<script>
-   const countrySelect = document.getElementById("country");
-   const tbody = document.getElementById("circuits_body");
-   let allCircuits =[]
+    <script>
+        const countrySelect = document.getElementById("country");
+        const tbody = document.getElementById("circuits_body");
+        let allCircuits = []
 
-   async function loadCircuits() {
-    const res = await fetch("https://f1api.dev/api/circuits?limit=30");
-    const data = await res.json();
-    console.log(data);
-    allCircuits = data.circuits || [];
+        async function loadCircuits() {
+            const res = await fetch("https://f1api.dev/api/circuits?limit=30");
+            const data = await res.json();
+            console.log(data);
+            allCircuits = data.circuits || [];
 
-    const countries = [...new Set(allCircuits.map(c => c.country))].sort();
+            const countries = [...new Set(allCircuits.map(c => c.country))].sort();
 
-    countries.forEach(name => {
-        countrySelect.innerHTML +=`<option>${name}</option>`;
-    });
-   }
- 
+            countries.forEach(name => {
+                countrySelect.innerHTML += `<option>${name}</option>`;
+            });
+        }
 
-  countrySelect.addEventListener("change", showCircuits);
 
-   function showCircuits() {
-    const country = countrySelect.value;
-    tbody.innerHTML = "";
+        countrySelect.addEventListener("change", showCircuits);
 
-    const matches = allCircuits.filter(c => c.country === country);
+        function showCircuits() {
+            const country = countrySelect.value;
+            tbody.innerHTML = "";
 
-    matches.forEach(c => {
-      tbody.innerHTML += `
+            const matches = allCircuits.filter(c => c.country === country);
+
+            matches.forEach(c => {
+                tbody.innerHTML += `
       <tr> 
         <td>${c.circuitName}</td>
         <td>${c.city ?? "N/A"}</td>
@@ -254,11 +254,12 @@
         <td>${c.lapRecord}</td>
         <td>${c.fastestLapDriverId}</td>
         </tr>`;
-      
-    });
-   }
 
-   loadCircuits();
-</script>
+            });
+        }
+
+        loadCircuits();
+    </script>
 </body>
+
 </html>

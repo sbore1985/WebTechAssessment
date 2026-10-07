@@ -27,7 +27,7 @@
             position: fixed;
             content: "";
             inset: 0;
-            background: url('images/f1_vehicles.jpg') center / cover no-repeat;
+            background: url('f1_vehicles.jpg') center / cover no-repeat;
             opacity: 50%;
             z-index: -1;
         }
@@ -119,7 +119,7 @@
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(2,minmax(0,350px));
+            grid-template-columns: repeat(2, minmax(0, 350px));
             justify-content: center;
             gap: 20px;
         }
@@ -141,10 +141,11 @@
             mix-blend-mode: multiply;
         }
 
-        @media (max-width: 700px){
-            .cards {grid-template-columns: minmax(0, 350px);}
+        @media (max-width: 700px) {
+            .cards {
+                grid-template-columns: minmax(0, 350px);
+            }
         }
-
     </style>
 </head>
 
@@ -152,7 +153,7 @@
 
     <div class="header">
         <a href="f1_homepage.html" class="logo">
-            <img src="images/f1_logo.png" alt="F1 Wiki Logo" />
+            <img src="f1_logo.png" alt="F1 Wiki Logo" />
         </a>
 
         <ul>
@@ -162,78 +163,78 @@
             <li><a href="f1_circuits.html">Circuits</a></li>
         </ul>
     </div>
-<main class="container">
-    <section class="cards" id="driver_cards"></section>
-</main>
+    <main class="container">
+        <section class="cards" id="driver_cards"></section>
+    </main>
 
-<script>
-    const API_URL = "https://f1api.dev/api/drivers";
-    const cards = document.getElementById("driver_cards");
+    <script>
+        const API_URL = "https://f1api.dev/api/drivers";
+        const cards = document.getElementById("driver_cards");
 
-    async function loadDrivers() {
-        cards.textContent = "loading drivers..";
-        try {
-            const res = await fetch(API_URL);
-            if (!res.ok) throw new Error("HTTP" + res.status);
-            const data = await res.json();
+        async function loadDrivers() {
+            cards.textContent = "loading drivers..";
+            try {
+                const res = await fetch(API_URL);
+                if (!res.ok) throw new Error("HTTP" + res.status);
+                const data = await res.json();
 
-            cards.textContent = "";
-            data.drivers.forEach(d => cards.appendChild(makeCard(d)));
-        } catch (err) {
-            cards.textContent = "Couldn't load drivers";
-            console.error(err);
+                cards.textContent = "";
+                data.drivers.forEach(d => cards.appendChild(makeCard(d)));
+            } catch (err) {
+                cards.textContent = "Couldn't load drivers";
+                console.error(err);
+            }
         }
-    }
 
-    function makeCard(d) {
-        const card = document.createElement("article");
-        card.className = "card";
+        function makeCard(d) {
+            const card = document.createElement("article");
+            card.className = "card";
 
-        const helmet = document.createElement("div");
-        helmet.className = "helmet";
-        const img = document.createElement("img");
-        img.src = "images/helmet.png";
-        img.alt = "Helmet image";
-        helmet.appendChild(img);
+            const helmet = document.createElement("div");
+            helmet.className = "helmet";
+            const img = document.createElement("img");
+            img.src = "helmet.png";
+            img.alt = "Helmet image";
+            helmet.appendChild(img);
 
-        const name = document.createElement("h2");
-        name.textContent = d.name + " " + d.surname;
+            const name = document.createElement("h2");
+            name.textContent = d.name + " " + d.surname;
 
-        const details = document.createElement("details");
-        details.className = "details";
+            const details = document.createElement("details");
+            details.className = "details";
 
-        const rows = [
-            ["Nationality", d.nationality],
-            ["Current Race Number", d.number],
-            ["Birthday", d.birthday],
-            ["Short Name", d.shortName]
-        ];
-       
-        rows.forEach(([label, value]) => {
-            const line = document.createElement("p");
-            line.textContent = label + ": " + (value ?? "N/A");
-            details.appendChild(line);
-        });
+            const rows = [
+                ["Nationality", d.nationality],
+                ["Current Race Number", d.number],
+                ["Birthday", d.birthday],
+                ["Short Name", d.shortName]
+            ];
 
-        const wiki = document.createElement("p")
-        wiki.textContent = "Wiki URL: ";
-        if (d.url) {
-            const link = document.createElement("a");
-            link.href = d.url;
-            link.textContent = "Wikipedia";
-            link.target = "blank";
-            link.rel = "noopener";
-            wiki.appendChild(link);
-        } else { wiki.textContent += "N/A";}
+            rows.forEach(([label, value]) => {
+                const line = document.createElement("p");
+                line.textContent = label + ": " + (value ?? "N/A");
+                details.appendChild(line);
+            });
 
-        details.appendChild(wiki);
+            const wiki = document.createElement("p")
+            wiki.textContent = "Wiki URL: ";
+            if (d.url) {
+                const link = document.createElement("a");
+                link.href = d.url;
+                link.textContent = "Wikipedia";
+                link.target = "blank";
+                link.rel = "noopener";
+                wiki.appendChild(link);
+            } else { wiki.textContent += "N/A"; }
 
-        card.append(helmet, name, details);
-        return card;
-    }
+            details.appendChild(wiki);
 
-    loadDrivers();
-</script>
+            card.append(helmet, name, details);
+            return card;
+        }
+
+        loadDrivers();
+    </script>
 </body>
 
 </html>
