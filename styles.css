@@ -69,7 +69,8 @@ nav a {
     padding: 10px 16px;
     color: #111;
     text-decoration: none;
-    border-radius: 6px
+    border-radius: 6px;
+
 }
 
 nav a:hover {
@@ -77,6 +78,16 @@ nav a:hover {
     color: ivory;
 }
 
+@media (min-width: 700px) {
+    .nav {
+        gap: 10px 18px;
+        padding: 10px 8 px;
+    }
+
+    .nav a {
+        font-size: 16px;
+    }
+}
 
 
 
@@ -93,7 +104,8 @@ main {
     border-radius: 10px;
 }
 
-h1, h2 {
+h1,
+h2 {
     text-align: center;
     text-decoration-line: underline;
     font-style: italic;
@@ -244,7 +256,7 @@ input[type="email"]:focus:invalid {
 /* ---- Links and Focus  ---- */
 
 a[target="_blank"]::after {
-    content:" \2197";
+    content: " \2197";
 }
 
 :focus-visible {
