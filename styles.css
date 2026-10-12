@@ -78,8 +78,8 @@ nav a:hover {
     color: ivory;
 }
 
-@media (min-width: 600px) {
-    .nav ul {
+@media (max-width: 700px) {
+    .nav {
         gap: 10px 12px;
         padding: 10px 8 px;
     }
