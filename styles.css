@@ -66,7 +66,7 @@ nav ul {
 }
 
 nav a {
-    padding: 10px 16px;
+    padding: 10px 8px;
     color: #111;
     text-decoration: none;
     border-radius: 6px;
@@ -78,17 +78,6 @@ nav a:hover {
     color: ivory;
 }
 
-@media (max-width: 700px) {
-    .nav {
-        gap: 10px 12px;
-        padding: 10px 8 px;
-    }
-
-    .nav a {
-        font-size: 16px;
-        white-space: nowrap;
-    }
-}
 
 
 
@@ -177,6 +166,10 @@ h2 {
 }
 
 @media (min-width: 700px) {
+    .nav a {
+        gap: 10px 12px;
+        padding: 10px 16 px;
+    }
     .cards {
         grid-template-columns: repeat(2, minmax(0, 350px));
         justify-content: center;
