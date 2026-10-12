@@ -48,13 +48,6 @@
         for (let page = 0; page < 40; page++) {
             const res = await fetch(`https://f1api.dev/api/teams?limit=30&offset=${allTeams.length}`);
             
-            // Checking !res.ok, adding error handling.
-            // Reference: https://www.w3schools.com/js/js_async_fetch.asp
-            if (!res.ok) {
-                statusMsg.textContent = "unable to load teams";
-                return;
-            }
-            
             // Convert res from json text into JavaScript object
             const data = await res.json();
 
