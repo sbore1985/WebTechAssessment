@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Formula1-Wiki: Contact Us</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="images/f1_logo.png" alt="F1 Wiki Logo - Home" />
+        </a>
+    </header>
+
+       <!-- Main navigation shared across the sites information pages -->
+    <nav aria-label="Main">
+        <ul>
+            <li><a href="f1_drivers.html">Drivers</a></li>
+            <li><a href="f1_teams.html">Teams</a></li>
+            <li><a href="f1_standings.html">Standings</a></li>
+            <li><a href="f1_circuits.html">Circuits</a></li>
+        </ul>
+    </nav>
+    <hr>
+    <main>
+        <h1>Contact Form</h1>
+
+        <!-- Form used to collect data -->
+        <!-- Reference: https://www.w3schools.com/html/html_forms.asp -->
+        <form id="contact_form" method="post" action="#">
+            <fieldset>
+                <h2>Your details</h2>
+
+                <!-- Each label set to match related input id and the required enables the validation before submission -->
+                <!-- Reference: https://www.w3schools.com/tags/tag_input.asp -->
+                <label for="fname">First name:</label><br>
+                <input type="text" id="fname" name="fname" required><br>
+
+                <label for="lname">Last name:</label><br>
+                <input type="text" id="lname" name="lname" required><br>
+
+                <!-- Type email used to check value is/appears to be an email address -->
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br>
+            </fieldset>
+
+            <fieldset>
+                <h3>Your Enquiry</h3>
+                <label for="reason">Reason</label>
+                <select id="reason" name="reason" required>
+                    <option value="">Choose a reason</option>
+                    <option>Feedback</option>
+                    <option>Report an Error</option>
+                    <option>Suggest new Features</option>
+                    <option>General Enquiry</option>
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <h4>Preferred Response</h4>
+                <!-- Set radio buttons to same name so only one option can be selected -->
+                 <!-- Referrence: https://www.w3schools.com/html/html_form_input_types.asp -->
+                <label><input type="radio" name="reply" value="email" checked> Email</label>
+                <label><input type="radio" name="reply" value="none"> No reply needed</label>
+            </fieldset>
+
+            <fieldset>
+                <h4>Your Message:</h4>
+                <textarea name="CONTACT_US_DETAIL" rows="5" cols="20" id="CONTACT_US_DETAIL"
+                    class="form"></textarea><br>
+
+                <button type="submit">Send message</button>
+                <!-- Role=status so annouces message to assistive tech -->
+                <p id="form_status" role="status"></p>
+            </fieldset>
+        </form>
+    </main>
+
+    <script>
+        const form = document.getElementById("contact_form");
+        const formStatus = document.getElementById("form_status");
+
+        // Listen for the form submit event
+        // preventDefault stops browser from moving away from page
+        // Reference: https://www.w3schools.com/jsref/event_preventdefault.asp
+        form.addEventListener("submit", e => {
+            e.preventDefault();
+
+            // Read first name from form and show confirmation message
+            // Example only as not linked to a server so doesn't send/store an email
+            formStatus.textContent = "Thanks " + form.elements.fname.value + ", your message has been sent.";
+            
+            // Clears/resets form
+            // Reference: https://www.w3schools.com/jsref/met_form_reset.asp
+            form.reset()
+        });
+    </script>
+
+    <footer>
+        <p><a href="contactUs.html">Contact F1 Wiki</a></p>
+        <p>Created by S. Bore | 2026 | Data from
+            <a href="https://f1api.dev">f1api.dev</a>
+        </p>
+    </footer>
+</body>
+
+</html>

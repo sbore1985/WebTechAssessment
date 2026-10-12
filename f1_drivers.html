@@ -2,204 +2,131 @@
 <html lang="en">
 
 <head>
+    <title>Formula1-Wiki: Drivers</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body,
-        html {
-            height: 100%;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #8c8c8c;
-        }
-
-        body {
-            isolation: isolate;
-            padding: 40px;
-        }
-
-        body::before {
-            position: fixed;
-            content: "";
-            inset: 0;
-            background: url('f1_vehicles.jpg') center / cover no-repeat;
-            opacity: 50%;
-            z-index: -1;
-        }
-
-        .header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 6px;
-        }
-
-        .header a.logo {
-            display: block;
-            line-height: 0;
-        }
-
-        .header img {
-            display: block;
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-
-        .header a.logo:hover img {
-            filter: brightness(1.5)
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #8c8c8c;
-            display: flex;
-            justify-content: center;
-        }
-
-        li {
-            float: center;
-        }
-
-        li a,
-        .dropbtn {
-            display: inline-block;
-            color: black;
-            font-style: bold;
-            font-size: large;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        li a:hover,
-        .dropdown:hover .dropbtn {
-            background-color: #8c8c8c;
-        }
-
-        li.dropdown {
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #8c8c8c;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            max-height: 30vh;
-            overflow-y: auto;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 350px));
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .card {
-            background: #e7e7e7;
-            opacity: 90%;
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
-        }
-
-        .helmet img {
-            display: block;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 330px;
-            height: auto;
-            mix-blend-mode: multiply;
-        }
-
-        @media (max-width: 700px) {
-            .cards {
-                grid-template-columns: minmax(0, 350px);
-            }
-        }
-    </style>
 </head>
 
 <body>
 
-    <div class="header">
+    <header class="header">
         <a href="index.html" class="logo">
-            <img src="f1_logo.png" alt="F1 Wiki Logo" />
+            <img src="images/f1_logo.png" alt="F1 Wiki Logo - Home" />
         </a>
+    </header>
 
+    <!-- Main navigation shared across the sites information pages -->
+    <nav aria-label="Main">
         <ul>
             <li><a href="f1_drivers.html">Drivers</a></li>
             <li><a href="f1_teams.html">Teams</a></li>
             <li><a href="f1_standings.html">Standings</a></li>
             <li><a href="f1_circuits.html">Circuits</a></li>
         </ul>
-    </div>
+    </nav>
+    <hr>
+
     <main class="container">
+        <!-- Label for attribute connects it to the search inputs id -->
+        <label for="q">Search drivers</label>
+        <input type="search" id="q" placeholder="e.g. Alonso">
+        <h1>Drivers</h1>
+
+        <!-- Used role='status' to let assistive tech annouce the loading/results updates -->
+        <p id="status_msg" role="status"></p>
+
+        <!-- Inserts one card per matching driver into this section -->
         <section class="cards" id="driver_cards"></section>
     </main>
 
     <script>
-        const API_URL = "https://f1api.dev/api/drivers";
+        // Find elements that JavaScript will update
         const cards = document.getElementById("driver_cards");
+        const searchBox = document.getElementById("q");
+        const statusMsg = document.getElementById("status_msg");
+        // Stores driver records downloaded from the api
+        let allDrivers = [];
 
+        // async/await used to wait for each api response before continuing
+        //Fetch reference: https://www.w3schools.com/js/js_api_fetch.asp
+        // API docs: https://f1api.dev/docs
         async function loadDrivers() {
-            cards.textContent = "loading drivers..";
-            try {
-                const res = await fetch(API_URL);
-                if (!res.ok) throw new Error("HTTP" + res.status);
-                const data = await res.json();
+            // As per docs, requests upto 30 records per request, using the number already loaded as the offset
+            // Also placed upper limit on the number of requests
+            for (let page = 0; page < 40; page++) {
+            const res = await fetch(`https://f1api.dev/api/drivers?limit=30&offset=${allDrivers.length}`);
 
-                cards.textContent = "";
-                data.drivers.forEach(d => cards.appendChild(makeCard(d)));
-            } catch (err) {
-                cards.textContent = "Couldn't load drivers";
-                console.error(err);
+            // Checking !res.ok, adding error handling.
+            // Reference: https://www.w3schools.com/js/js_async_fetch.asp
+            if (!res.ok) {
+                statusMsg.textContent = "Unable to load drivers";
+                return;
             }
+            
+            // Convert res from json text into JavaScript object
+            const data = await res.json();
+
+            // When nothing left to return stop/break
+            if (data.drivers.length === 0) break;
+
+            // Creates combined array which includes existing and newly downloaded data
+            allDrivers = allDrivers.concat(data.drivers);
+
+            // Refreshes the displayed cards and progress
+            showDrivers();
+            statusMsg.textContent = "Loading drivers... " + allDrivers.length + " so far";
+            }
+            statusMsg.textContent = allDrivers.length + " drivers loaded";
         }
 
+        // shows the drivers that match what's typed in the search box and search both first name and surname
+        // Reference: https://www.w3schools.com/jsref/jsref_tolowercase.asp
+        // https://www.w3schools.com/jsref/jsref_includes.asp
+        function showDrivers() {
+            const text = searchBox.value.toLowerCase();
+            const matches = allDrivers.filter(d => (d.name + " " + d.surname).toLowerCase().includes(text));
+            
+            // Remove old results before adding filter
+            cards.textContent = "";
+
+            // forEach runs makeCard for every matching driver and adds/appends the card
+            // https://www.w3schools.com/js/js_array_iteration.asp
+            // https://www.w3schools.com/jsref/met_node_appendchild.asp
+            matches.forEach(d => cards.appendChild(makeCard(d)));
+        }
+
+        // Input fires off/shows as the user types
+        // References:https://www.w3schools.com/js/js_htmldom_eventlistener.asp
+        searchBox.addEventListener("input", showDrivers);
+
+        // Starts downloading driver data when the script runs
+        loadDrivers();
+
+
+        // Create and return one article per driver
+        //  The createElement creates individual DOM elements and the append/appendChild places them in the document 
+        // https://www.w3schools.com/jsref/met_node_appendchild.asp
+        // https://www.w3schools.com/jsref/met_document_createelement.asp
         function makeCard(d) {
             const card = document.createElement("article");
             card.className = "card";
 
+            // Helmet image
             const helmet = document.createElement("div");
             helmet.className = "helmet";
             const img = document.createElement("img");
-            img.src = "helmet.png";
-            img.alt = "Helmet image";
+            img.src = "images/helmet.png";
+            img.alt = "";
             helmet.appendChild(img);
 
             const name = document.createElement("h2");
             name.textContent = d.name + " " + d.surname;
+            name.style.color = "crimson";
 
+            // Details creates a browser expandable section
+            // https://www.w3schools.com/tags/tag_details.asp
             const details = document.createElement("details");
             details.className = "details";
 
@@ -210,31 +137,43 @@
                 ["Short Name", d.shortName]
             ];
 
+            // Create a paragraph for each driver detail
+            //  ?? uses "N/A" when a value is null/undefined
             rows.forEach(([label, value]) => {
                 const line = document.createElement("p");
                 line.textContent = label + ": " + (value ?? "N/A");
                 details.appendChild(line);
             });
 
+            // Create/add optional link to the drivers Wikipedia page, if the api provides the details
             const wiki = document.createElement("p")
             wiki.textContent = "Wiki URL: ";
             if (d.url) {
                 const link = document.createElement("a");
                 link.href = d.url;
                 link.textContent = "Wikipedia";
-                link.target = "blank";
+                link.target = "_blank";
                 link.rel = "noopener";
                 wiki.appendChild(link);
             } else { wiki.textContent += "N/A"; }
 
             details.appendChild(wiki);
 
+            // Append all created elements to the card 
+            // Reference: https://www.w3schools.com/jsref/met_element_append.asp
             card.append(helmet, name, details);
             return card;
         }
 
-        loadDrivers();
     </script>
+
+    <footer>
+        <p><a href="contactUs.html">Contact F1 Wiki</a></p>
+        <p>Created by S. Bore | 2026 | Data from
+            <a href="https://f1api.dev">f1api.dev</a>
+        </p>
+    </footer>
+
 </body>
 
 </html>

@@ -2,200 +2,36 @@
 <html lang="en">
 
 <head>
+    <title>Formula1-Wiki: Standings</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body,
-        html {
-            height: 100%;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #8c8c8c;
-        }
-
-        body {
-            isolation: isolate;
-            padding: 40px;
-        }
-
-        body::before {
-            position: fixed;
-            content: "";
-            inset: 0;
-            background: url('f1_vehicles.jpg') center / cover no-repeat;
-            opacity: 50%;
-            z-index: -1;
-        }
-
-        .header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 6px;
-        }
-
-        .header a.logo {
-            display: block;
-            line-height: 0;
-        }
-
-        .header img {
-            display: block;
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-
-        .header a.logo:hover img {
-            filter: brightness(1.5)
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #8c8c8c;
-            display: flex;
-            justify-content: center;
-        }
-
-        li {
-            float: center;
-        }
-
-        li a,
-        .dropbtn {
-            display: inline-block;
-            color: black;
-            font-style: bold;
-            font-size: large;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        li a:hover,
-        .dropdown:hover .dropbtn {
-            background-color: #8c8c8c;
-        }
-
-        li.dropdown {
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #8c8c8c;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            max-height: 30vh;
-            overflow-y: auto;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 350px));
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .card {
-            background: #e7e7e7;
-            opacity: 90%;
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
-        }
-
-        .helmet img {
-            display: block;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 330px;
-            height: auto;
-            mix-blend-mode: multiply;
-        }
-
-        @media (max-width: 700px) {
-            .cards {
-                grid-template-columns: minmax(0, 350px);
-            }
-        }
-
-        .standings-wrap {
-            max-width: 900px;
-            margin: 20px auto;
-            overflow-x: auto;
-        }
-
-        .standings {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-        }
-
-        .standings th,
-        .standings td {
-            padding: 10px 14px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
-        }
-
-        .standings th {
-            text-align: center;
-        }
-
-        #season-standings {
-            text-align: center;
-            text-decoration-line: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <div class="header">
+    <header class="header">
         <a href="index.html" class="logo">
-            <img src="f1_logo.png" alt="F1 Wiki Logo" />
+            <img src="images/f1_logo.png" alt="F1 Wiki Logo - Home" />
         </a>
+    </header>
 
+    <!-- Main navigation shared across the sites information pages -->
+    <nav aria-label="Main">
         <ul>
             <li><a href="f1_drivers.html">Drivers</a></li>
             <li><a href="f1_teams.html">Teams</a></li>
             <li><a href="f1_standings.html">Standings</a></li>
             <li><a href="f1_circuits.html">Circuits</a></li>
         </ul>
-    </div>
+    </nav>
+    <hr>
     <main class="container">
-        <h2 id="season-standings">Drivers' Championship</h2>
-        <p style="text-align: center">
+        <h1>Drivers' Championship</h1>
+        <p>
             <label for="Year">Season: </label>
+            <!-- Select element to allow users to choose which season to query -->
+            <!-- Reference: https://www.w3schools.com/html/html_form_elements.asp -->
             <select id="Year">
                 <option>2026</option>
                 <option>2025</option>
@@ -209,17 +45,21 @@
                 <option>2017</option>
             </select>
         </p>
+
+        <!-- HTML table for standings into rows and columns -->
+        <!-- Reference: https://www.w3schools.com/html/html_tables.asp -->
         <div class="standings-wrap">
             <table class="standings">
                 <thead>
                     <tr>
-                        <th>Pos</th>
-                        <th>Driver</th>
-                        <th>Team</th>
-                        <th>Points</th>
-                        <th>Wins</th>
+                        <th scope="col">Pos</th>
+                        <th scope="col">Driver</th>
+                        <th scope="col">Team</th>
+                        <th scope="col">Points</th>
+                        <th scope="col">Wins</th>
                     </tr>
                 </thead>
+                <!-- Inserts a table row for each championship result -->
                 <tbody id="standings_body"></tbody>
             </table>
         </div>
@@ -228,16 +68,26 @@
         const yearSelect = document.getElementById("Year");
         const tbody = document.getElementById("standings_body");
 
+        // When selection changes, fetch and display the years standings
+        // Reference: https://www.w3schools.com/js/js_htmldom_eventlistener.asp
         yearSelect.addEventListener("change", loadStandings);
 
+        // Fetch stadngins for selected year
+        // API docs: https://f1api.dev/docs
         async function loadStandings() {
             const Year = yearSelect.value;
+
+            // Clear standings so results from other seasons when selected are not mixed together
             tbody.innerHTML = "";
             if (Year === "") return;
             const res = await fetch(`https://f1api.dev/api/${Year}/drivers-championship`);
+            
+            // Convert response from json text into JavaScript Object
             const data = await res.json();
             const list = data.drivers_championship || [];
 
+            // Create one table row per driver. Values inserted into a string
+            // Reference: https://www.w3schools.com/js/js_string_templates.asp            
             list.forEach(s => {
                 tbody.innerHTML += `
       <tr> 
@@ -251,8 +101,16 @@
             });
         }
 
+        // Load default season when page first opens
         loadStandings();
     </script>
+
+    <footer>
+        <p><a href="contactUs.html">Contact F1 Wiki</a></p>
+        <p>Created by S. Bore | 2026 | Data from
+            <a href="https://f1api.dev">f1api.dev</a>
+        </p>
+    </footer>
 </body>
 
 </html>

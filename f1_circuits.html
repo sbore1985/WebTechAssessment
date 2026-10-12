@@ -2,217 +2,58 @@
 <html lang="en">
 
 <head>
+    <title>Formula1-Wiki: Circuits</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body,
-        html {
-            height: 100%;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #8c8c8c;
-        }
-
-        body {
-            isolation: isolate;
-            padding: 40px;
-        }
-
-        body::before {
-            position: fixed;
-            content: "";
-            inset: 0;
-            background: url('f1_vehicles.jpg') center / cover no-repeat;
-            opacity: 50%;
-            z-index: -1;
-        }
-
-        .header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 6px;
-        }
-
-        .header a.logo {
-            display: block;
-            line-height: 0;
-        }
-
-        .header img {
-            display: block;
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-
-        .header a.logo:hover img {
-            filter: brightness(1.5)
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #8c8c8c;
-            display: flex;
-            justify-content: center;
-        }
-
-        li {
-            float: center;
-        }
-
-        li a,
-        .dropbtn {
-            display: inline-block;
-            color: black;
-            font-style: bold;
-            font-size: large;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        li a:hover,
-        .dropdown:hover .dropbtn {
-            background-color: #8c8c8c;
-        }
-
-        li.dropdown {
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #8c8c8c;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            max-height: 30vh;
-            overflow-y: auto;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 350px));
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .card {
-            background: #e7e7e7;
-            opacity: 90%;
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
-        }
-
-        .helmet img {
-            display: block;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 330px;
-            height: auto;
-            mix-blend-mode: multiply;
-        }
-
-        @media (max-width: 700px) {
-            .cards {
-                grid-template-columns: minmax(0, 350px);
-            }
-        }
-
-        .standings-wrap {
-            max-width: 900px;
-            margin: 20px auto;
-            overflow-x: auto;
-        }
-
-        .standings {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-        }
-
-        .standings th,
-        .standings td {
-            padding: 10px 14px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
-        }
-
-        .standings th {
-            text-align: center;
-        }
-
-        #season-standings {
-            text-align: center;
-            text-decoration-line: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <div class="header">
+    <header class="header">
         <a href="index.html" class="logo">
-            <img src="f1_logo.png" alt="F1 Wiki Logo" />
+            <img src="images/f1_logo.png" alt="F1 Wiki Logo - Home" />
         </a>
+    </header>
 
+    <!-- Main navigation shared across the sites information pages -->
+    <nav aria-label="Main">
         <ul>
             <li><a href="f1_drivers.html">Drivers</a></li>
             <li><a href="f1_teams.html">Teams</a></li>
             <li><a href="f1_standings.html">Standings</a></li>
             <li><a href="f1_circuits.html">Circuits</a></li>
         </ul>
-    </div>
+    </nav>
+    <hr>
     <main class="container">
-        <h2 id="season-standings">Circuits</h2>
-        <p style="text-align: center">
+        <h1>Circuits</h1>
+        <p>
             <label for="country">Country: </label>
+
+            <!-- Select element to allow users to choose which country to query -->
+            <!-- Reference: https://www.w3schools.com/html/html_form_elements.asp -->
             <select id="country">
-                <option value="">Choose a Country</option>>
+                <option value="">Choose a Country</option>
             </select>
         </p>
 
+        <!-- HTML table for circuits into rows and columns -->
+        <!-- Reference: https://www.w3schools.com/html/html_tables.asp -->
         <div class="standings-wrap">
             <table class="standings">
                 <thead>
                     <tr>
-                        <th>Circuit</th>
-                        <th>City</th>
-                        <th>Length</th>
-                        <th>Corners</th>
-                        <th>Lap Record</th>
-                        <th>Lap Record Held By</th>
+                        <th scope="col">Circuit</th>
+                        <th scope="col">City</th>
+                        <th scope="col">Length</th>
+                        <th scope="col">Corners</th>
+                        <th scope="col">Lap Record</th>
+                        <th scope="col">Lap Record Held By</th>
                     </tr>
                 </thead>
+
+                <!-- Inserts a table row for each circuit result -->
                 <tbody id="circuits_body"></tbody>
             </table>
         </div>
@@ -220,46 +61,68 @@
     <script>
         const countrySelect = document.getElementById("country");
         const tbody = document.getElementById("circuits_body");
+        // Stores circuits records downloaded from the api
         let allCircuits = []
 
+        // Retrieve circuit data from F1 api
+        // References: https://www.w3schools.com/js/js_api_fetch.asp and https://f1api.dev/docs
         async function loadCircuits() {
             const res = await fetch("https://f1api.dev/api/circuits?limit=30");
             const data = await res.json();
-            console.log(data);
             allCircuits = data.circuits || [];
 
+            // map extracts country, Set removes duplicates and sort puts them in alphabetical order
+            // References: https://www.w3schools.com/react/react_es6_spread.asp
+            // https://www.w3schools.com/js/js_object_sets.asp
+            // https://www.w3schools.com/jsref/jsref_map.asp
+            // https://www.w3schools.com/js/js_array_sort.asp
             const countries = [...new Set(allCircuits.map(c => c.country))].sort();
 
+            // Dropdown option for each unique country returned
+            // Reference: https://www.w3schools.com/js/js_string_templates.asp
             countries.forEach(name => {
                 countrySelect.innerHTML += `<option>${name}</option>`;
             });
         }
 
-
+        // Filters existing circuit list when new country is selected
         countrySelect.addEventListener("change", showCircuits);
 
         function showCircuits() {
             const country = countrySelect.value;
+
+            // Clear any rows from previous result/selection
             tbody.innerHTML = "";
 
+            // Filter and return circuits that match selection
+            // Reference: https://www.w3schools.com/jsref/jsref_filter.asp
             const matches = allCircuits.filter(c => c.country === country);
 
+            // For every match add a row. ?? display N/A for Null or undefined result
             matches.forEach(c => {
                 tbody.innerHTML += `
       <tr> 
         <td>${c.circuitName}</td>
         <td>${c.city ?? "N/A"}</td>
-        <td>${c.circuitLength}</td>
-        <td>${c.numberOfCorners}</td>
-        <td>${c.lapRecord}</td>
-        <td>${c.fastestLapDriverId}</td>
+        <td>${c.circuitLength ?? "N/A"}</td>
+        <td>${c.numberOfCorners ?? "N/A"}</td>
+        <td>${c.lapRecord ?? "N/A"}</td>
+        <td>${c.fastestLapDriverId ?? "N/A"}</td>
         </tr>`;
 
             });
         }
 
+        // Load circuit data and populate dropdown at page load
         loadCircuits();
     </script>
+
+    <footer>
+        <p><a href="contactUs.html">Contact F1 Wiki</a></p>
+        <p>Created by S. Bore | 2026 | Data from
+            <a href="https://f1api.dev">f1api.dev</a>
+        </p>
+    </footer>
 </body>
 
 </html>
