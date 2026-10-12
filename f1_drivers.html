@@ -57,13 +57,6 @@
             // Also placed upper limit on the number of requests
             for (let page = 0; page < 40; page++) {
             const res = await fetch(`https://f1api.dev/api/drivers?limit=30&offset=${allDrivers.length}`);
-
-            // Checking !res.ok, adding error handling.
-            // Reference: https://www.w3schools.com/js/js_async_fetch.asp
-            if (!res.ok) {
-                statusMsg.textContent = "Unable to load drivers";
-                return;
-            }
             
             // Convert res from json text into JavaScript object
             const data = await res.json();
