@@ -79,7 +79,7 @@ nav a:hover {
 }
 
 @media (min-width: 600px) {
-    .nav {
+    .nav ul {
         gap: 10px 12px;
         padding: 10px 8 px;
     }
