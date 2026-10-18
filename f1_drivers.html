@@ -56,20 +56,20 @@
             // As per docs, requests upto 30 records per request, using the number already loaded as the offset
             // Also placed upper limit on the number of requests
             for (let page = 0; page < 40; page++) {
-            const res = await fetch(`https://f1api.dev/api/drivers?limit=30&offset=${allDrivers.length}`);
-            
-            // Convert res from json text into JavaScript object
-            const data = await res.json();
+                const res = await fetch(`https://f1api.dev/api/drivers?limit=30&offset=${allDrivers.length}`);
 
-            // When nothing left to return stop/break
-            if (data.drivers.length === 0) break;
+                // Convert res from json text into JavaScript object
+                const data = await res.json();
 
-            // Creates combined array which includes existing and newly downloaded data
-            allDrivers = allDrivers.concat(data.drivers);
+                // When nothing left to return stop/break
+                if (data.drivers.length === 0) break;
 
-            // Refreshes the displayed cards and progress
-            showDrivers();
-            statusMsg.textContent = "Loading drivers... " + allDrivers.length + " so far";
+                // Creates combined array which includes existing and newly downloaded data
+                allDrivers = allDrivers.concat(data.drivers);
+
+                // Refreshes the displayed cards and progress
+                showDrivers();
+                statusMsg.textContent = "Loading drivers... " + allDrivers.length + " so far";
             }
             statusMsg.textContent = allDrivers.length + " drivers loaded";
         }
@@ -80,7 +80,7 @@
         function showDrivers() {
             const text = searchBox.value.toLowerCase();
             const matches = allDrivers.filter(d => (d.name + " " + d.surname).toLowerCase().includes(text));
-            
+
             // Remove old results before adding filter
             cards.textContent = "";
 

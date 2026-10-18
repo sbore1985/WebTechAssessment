@@ -72,16 +72,17 @@
         // Reference: https://www.w3schools.com/js/js_htmldom_eventlistener.asp
         yearSelect.addEventListener("change", loadStandings);
 
-        // Fetch stadngins for selected year
+        // Fetch standings for selected year
         // API docs: https://f1api.dev/docs
         async function loadStandings() {
             const Year = yearSelect.value;
 
+            //Fetch reference: https://www.w3schools.com/js/js_api_fetch.asp
             // Clear standings so results from other seasons when selected are not mixed together
             tbody.innerHTML = "";
             if (Year === "") return;
             const res = await fetch(`https://f1api.dev/api/${Year}/drivers-championship`);
-            
+
             // Convert response from json text into JavaScript Object
             const data = await res.json();
             const list = data.drivers_championship || [];

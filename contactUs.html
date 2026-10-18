@@ -16,7 +16,7 @@
         </a>
     </header>
 
-       <!-- Main navigation shared across the sites information pages -->
+    <!-- Main navigation shared across the sites information pages -->
     <nav aria-label="Main">
         <ul>
             <li><a href="f1_drivers.html">Drivers</a></li>
@@ -33,7 +33,9 @@
         <!-- Reference: https://www.w3schools.com/html/html_forms.asp -->
         <form id="contact_form" method="post" action="#">
             <fieldset>
-                <h2>Your details</h2>
+                <legend>
+                    <h2>Your details</h2>
+                </legend>
 
                 <!-- Each label set to match related input id and the required enables the validation before submission -->
                 <!-- Reference: https://www.w3schools.com/tags/tag_input.asp -->
@@ -49,7 +51,9 @@
             </fieldset>
 
             <fieldset>
-                <h3>Your Enquiry</h3>
+                <legend>
+                    <h2>Your Enquiry</h2>
+                </legend>
                 <label for="reason">Reason</label>
                 <select id="reason" name="reason" required>
                     <option value="">Choose a reason</option>
@@ -61,15 +65,20 @@
             </fieldset>
 
             <fieldset>
-                <h4>Preferred Response</h4>
+                <legend>
+                    <h2>Preferred Response</h2>
+                </legend>
                 <!-- Set radio buttons to same name so only one option can be selected -->
-                 <!-- Referrence: https://www.w3schools.com/html/html_form_input_types.asp -->
+                <!-- Reference: https://www.w3schools.com/html/html_form_input_types.asp -->
                 <label><input type="radio" name="reply" value="email" checked> Email</label>
                 <label><input type="radio" name="reply" value="none"> No reply needed</label>
             </fieldset>
 
             <fieldset>
-                <h4>Your Message:</h4>
+                <legend>
+                    <h2>Your Message:</h2>
+                </legend>
+                <label for="CONTACT_US_DETAIL">Message</label>
                 <textarea name="CONTACT_US_DETAIL" rows="5" cols="20" id="CONTACT_US_DETAIL"
                     class="form"></textarea><br>
 
@@ -93,7 +102,7 @@
             // Read first name from form and show confirmation message
             // Example only as not linked to a server so doesn't send/store an email
             formStatus.textContent = "Thanks " + form.elements.fname.value + ", your message has been sent.";
-            
+
             // Clears/resets form
             // Reference: https://www.w3schools.com/jsref/met_form_reset.asp
             form.reset()

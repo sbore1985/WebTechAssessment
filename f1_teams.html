@@ -41,29 +41,29 @@
         const statusMsg = document.getElementById("status_msg")
         let allTeams = [];
 
-    // async/await used to wait for each api response before continuing
-    //Fetch reference: https://www.w3schools.com/js/js_api_fetch.asp
-    // API docs: https://f1api.dev/docs
-    async function loadTeams() {
-        for (let page = 0; page < 40; page++) {
-            const res = await fetch(`https://f1api.dev/api/teams?limit=30&offset=${allTeams.length}`);
-            
-            // Convert res from json text into JavaScript object
-            const data = await res.json();
+        // async/await used to wait for each api response before continuing
+        //Fetch reference: https://www.w3schools.com/js/js_api_fetch.asp
+        // API docs: https://f1api.dev/docs
+        async function loadTeams() {
+            for (let page = 0; page < 40; page++) {
+                const res = await fetch(`https://f1api.dev/api/teams?limit=30&offset=${allTeams.length}`);
 
-            // When nothing left to return stop/break
-            if (data.teams.length === 0) break;        
+                // Convert res from json text into JavaScript object
+                const data = await res.json();
 
-            // Creates combined array which includes existing and newly downloaded data
-            allTeams = allTeams.concat(data.teams);
+                // When nothing left to return stop/break
+                if (data.teams.length === 0) break;
 
-            // Refreshes the displayed cards and progress
-            showTeams();
-            statusMsg.textContent = "Loading teams... " + allTeams.length + " so far";
+                // Creates combined array which includes existing and newly downloaded data
+                allTeams = allTeams.concat(data.teams);
+
+                // Refreshes the displayed cards and progress
+                showTeams();
+                statusMsg.textContent = "Loading teams... " + allTeams.length + " so far";
             }
             statusMsg.textContent = allTeams.length + " teams loaded";
         }
-        
+
         // shows the teams that match what's typed in the search box
         // Reference: https://www.w3schools.com/jsref/jsref_tolowercase.asp
         // https://www.w3schools.com/jsref/jsref_includes.asp
@@ -127,7 +127,7 @@
                 details.appendChild(line);
             });
 
-            // Create/add optional link to the drivers Wikipedia page, if the api provides the details
+            // Create/add optional link to the teams Wikipedia page, if the api provides the details
             const wiki = document.createElement("p")
             wiki.textContent = "Wiki URL: ";
             if (t.url) {
@@ -147,7 +147,7 @@
             return card;
         }
 
-    
+
     </script>
 
     <footer>
