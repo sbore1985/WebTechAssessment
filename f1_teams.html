@@ -112,6 +112,10 @@
             const details = document.createElement("details");
             details.className = "details";
 
+            const summary = document.createElement("summary");
+            summary.textContent = "More info";
+            details.appendChild(summary);
+
             const rows = [
                 ["Team Nationality", t.teamNationality],
                 ["Constructors Championships Won", t.constructorsChampionships],

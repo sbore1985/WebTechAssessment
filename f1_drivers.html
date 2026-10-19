@@ -123,6 +123,10 @@
             const details = document.createElement("details");
             details.className = "details";
 
+            const summary = document.createElement("summary");
+            summary.textContent = "More info";
+            details.appendChild(summary);
+
             const rows = [
                 ["Nationality", d.nationality],
                 ["Current Race Number", d.number],
